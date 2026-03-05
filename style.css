@@ -1,0 +1,51 @@
+:root {
+    --primary: #10b981; /* أخضر ثقة */
+    --danger: #ef4444; /* أحمر تنبيه */
+    --bg: #020617;
+    --card: #0f172a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+
+body { 
+    background-color: var(--bg); 
+    color: white; 
+    display: flex; justify-content: center; min-height: 100vh;
+}
+
+.app-container {
+    width: 100%; max-width: 600px; padding: 20px;
+}
+
+header { text-align: center; margin: 30px 0; }
+.logo { font-size: 2.5rem; font-weight: 800; color: var(--primary); letter-spacing: 2px; }
+
+textarea {
+    width: 100%; height: 250px; background: var(--card); border: 2px solid rgba(255,255,255,0.05);
+    border-radius: 20px; padding: 20px; color: white; font-size: 1.1rem; resize: none; outline: none;
+    transition: 0.3s;
+}
+
+textarea:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(16, 185, 129, 0.1); }
+
+.action-area { display: flex; gap: 10px; margin-top: 15px; }
+
+#scan-btn {
+    flex: 1; padding: 15px; border-radius: 15px; border: none; background: var(--primary);
+    color: #020617; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s;
+}
+
+.clear-btn { background: rgba(255,255,255,0.05); border: none; width: 60px; border-radius: 15px; color: white; cursor: pointer; }
+
+/* العداد الدائري */
+.result-card { background: var(--card); border-radius: 25px; padding: 30px; margin-top: 30px; text-align: center; animation: slideIn 0.5s ease; }
+.gauge-container { width: 150px; margin: 0 auto 20px; }
+.circular-chart { display: block; margin: 10px auto; max-width: 100%; }
+.circle-bg { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 2.8; }
+.circle { fill: none; stroke-width: 2.8; stroke-linecap: round; transition: stroke-dasharray 1s ease; }
+.percentage { fill: white; font-size: 0.5rem; text-anchor: middle; font-weight: bold; }
+
+.hidden { display: none; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+footer { margin-top: 40px; text-align: center; opacity: 0.6; }
