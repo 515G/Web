@@ -19,21 +19,21 @@
         <textarea id="text-input" placeholder="أدخل النص هنا للفحص..."></textarea>
         
         <div class="action-area">
-            <button id="scan-btn" onclick="analyzeText()">فحص النص الآن 🔍</button>
-            <button class="clear-btn" onclick="clearText()">مسح</button>
+            <button type="button" id="scan-btn" onclick="analyzeText()">فحص النص الآن 🔍</button>
+            <button type="button" class="clear-btn" onclick="clearText()">مسح</button>
         </div>
 
         <div id="result-card" class="result-card hidden">
             <div class="score-display">
-                <span id="percentage-text">0%</span>
-                <p id="result-title">جاري التحليل...</p>
+                <h2 id="percentage-text">0%</h2>
+                <h3 id="result-title">جاري التحليل...</h3>
             </div>
             <p id="result-desc"></p>
         </div>
     </main>
 
     <footer class="rights-section">
-        <p>©</b></p>
+        <p>© 2026 جميع الحقوق محفوظة | <b></b></p>
     </footer>
 </div>
 
