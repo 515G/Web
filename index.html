@@ -3,66 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صِدق | المنصة الاحترافية لكشف AI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@300;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>صِدق Pro | كاشف الانتحال الآلي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="app-container">
     <header>
-        <div class="brand">
-            <span class="logo-icon">J</span>
-            <h1>صِـدق</h1>
-        </div>
-        <p class="tagline">نظام التدقيق اللغوي وكشف الانتحال الآلي</p>
+        <div class="logo-box">J</div>
+        <h1>منصة صِـدق <small>v2.0</small></h1>
+        <p>التحليل اللغوي المتقدم لكشف النصوص المولدة آلياً</p>
     </header>
 
     <main>
-        <div class="input-wrapper">
-            <textarea id="text-input" placeholder="أدخل النص المراد فحصه هنا (يفضل أكثر من 20 كلمة)..."></textarea>
-            <div class="word-count">عدد الكلمات: <span id="count-num">0</span></div>
-        </div>
-        
-        <div class="control-panel">
-            <button type="button" id="scan-btn" onclick="analyzeText()">
-                <i class="fas fa-microscope"></i> بدء الفحص العميق
-            </button>
-            <button type="button" class="btn-secondary" onclick="clearText()">
-                <i class="fas fa-trash-alt"></i>
-            </button>
+        <div class="input-section">
+            <textarea id="text-input" placeholder="أدخل النص هنا (يفضل +30 كلمة لنتائج دقيقة)..."></textarea>
+            <div class="info-bar">
+                <span>عدد الكلمات: <b id="word-count">0</b></span>
+            </div>
         </div>
 
-        <div id="result-card" class="result-card hidden">
-            <div class="result-header">
-                <span>تحليل البصمة الرقمية:</span>
-                <span id="status-badge" class="badge">جاري...</span>
+        <button type="button" id="scan-btn" onclick="startAnalysis()">بدء الفحص العميق 🔍</button>
+
+        <div id="result-area" class="result-card hidden">
+            <div class="gauge-wrapper">
+                <div id="result-percentage">0%</div>
+                <div class="label">احتمالية التدخل الآلي</div>
             </div>
             
-            <div class="score-section">
-                <div class="score-circle">
-                    <h2 id="percentage-text">0%</h2>
-                    <small>نسبة AI</small>
-                </div>
-                <div class="score-info">
-                    <h3 id="result-title">تحليل المحتوى...</h3>
-                    <p id="result-desc">يرجى الانتظار ثوانٍ لمعالجة النص.</p>
-                </div>
+            <div class="status-box">
+                <h3 id="result-status">جاري التحليل...</h3>
+                <p id="result-msg"></p>
             </div>
 
-            <div class="progress-container">
-                <div id="progress-bar" class="progress-fill"></div>
+            <div class="progress-bar">
+                <div id="progress-fill"></div>
             </div>
         </div>
     </main>
 
     <footer>
-        <div class="footer-content">
-            <p>جميع الحقوق محفوظة © 2026</p>
-            <p class="owner"><b></b></p>
-            <div class="tech-stack">نظام SPA محمي بترخيص MIT</div>
-        </div>
+        <p> <b>  </b></p>
+        <small>© 2026 جميع الحقوق محفوظة - نظام SPA</small>
     </footer>
 </div>
 
