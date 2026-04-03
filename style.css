@@ -1,33 +1,62 @@
 :root {
-    --pencil: #2d3436;
-    --paper: #fdfaf0;
-    --primary: #10b981;
+    --accent: #10b981; /* أخضر للنجاح */
+    --danger: #ef4444; /* أحمر للخطر */
+    --dark: #1e293b;
+    --paper: #ffffff;
+    --bg: #f1f5f9;
 }
 
-body { background: #dcdde1; display: flex; justify-content: center; padding: 20px; font-family: 'Changa', sans-serif; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Changa', sans-serif; }
+
+body { background: var(--bg); color: var(--dark); display: flex; justify-content: center; min-height: 100vh; padding: 20px; }
 
 .app-container {
-    width: 100%; max-width: 500px; background: var(--paper);
-    padding: 30px; border: 3px solid var(--pencil);
-    border-radius: 15px; box-shadow: 10px 10px 0px rgba(0,0,0,0.1);
+    width: 100%; max-width: 650px; background: var(--paper);
+    border-radius: 24px; padding: 40px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    border: 1px solid #e2e8f0;
 }
 
+/* الهيدر والشعار */
+header { text-align: center; margin-bottom: 30px; }
+.brand { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.logo-icon { background: var(--dark); color: white; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-weight: bold; font-size: 1.5rem; }
+h1 { font-size: 2.2rem; color: var(--dark); }
+.tagline { opacity: 0.6; font-size: 0.9rem; margin-top: 5px; }
+
+/* منطقة الإدخال */
+.input-wrapper { position: relative; margin-bottom: 20px; }
 textarea {
-    width: 100%; height: 180px; margin: 20px 0; padding: 15px;
-    border: 2px solid var(--pencil); border-radius: 10px; background: transparent;
-    font-size: 1.1rem; outline: none; resize: none;
+    width: 100%; height: 220px; padding: 20px; border-radius: 16px;
+    border: 2px solid #e2e8f0; background: #f8fafc; font-size: 1.1rem;
+    resize: none; outline: none; transition: 0.3s;
 }
+textarea:focus { border-color: var(--dark); background: white; }
+.word-count { position: absolute; bottom: 15px; left: 15px; font-size: 0.8rem; opacity: 0.5; }
 
-.action-area { display: flex; gap: 10px; }
-#scan-btn { flex: 4; padding: 12px; background: var(--pencil); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
-.clear-btn { flex: 1; background: transparent; border: 1px solid var(--pencil); border-radius: 10px; cursor: pointer; }
+/* الأزرار */
+.control-panel { display: flex; gap: 10px; }
+#scan-btn { flex: 1; padding: 15px; border-radius: 12px; border: none; background: var(--dark); color: white; font-weight: bold; cursor: pointer; font-size: 1.1rem; transition: 0.3s; }
+#scan-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
+.btn-secondary { width: 60px; border-radius: 12px; border: 1px solid #e2e8f0; background: white; cursor: pointer; transition: 0.2s; }
 
-.result-card { margin-top: 30px; padding: 20px; border-top: 2px dashed var(--pencil); text-align: center; }
-.score-display { margin-bottom: 15px; }
+/* كرت النتائج */
+.result-card { 
+    margin-top: 30px; padding: 25px; border-radius: 16px; 
+    background: #f8fafc; border: 1px solid #e2e8f0; animation: fadeIn 0.5s ease;
+}
+.result-header { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 0.9rem; font-weight: bold; }
+.badge { background: #e2e8f0; padding: 4px 12px; border-radius: 20px; }
 
-/* تنسيق النسبة المئوية */
-#percentage-text { font-size: 3.5rem; font-weight: bold; display: block; color: var(--primary); }
-#result-title { font-size: 1.3rem; font-weight: bold; margin-top: 5px; }
+.score-section { display: flex; align-items: center; gap: 25px; margin-bottom: 20px; }
+.score-circle { text-align: center; border-right: 2px solid #e2e8f0; padding-right: 25px; }
+#percentage-text { font-size: 3rem; font-weight: 800; line-height: 1; }
+
+.progress-container { width: 100%; height: 8px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; transition: width 1s ease; }
 
 .hidden { display: none; }
-.rights-section { margin-top: 40px; text-align: center; font-size: 0.8rem; opacity: 0.7; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+footer { margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; text-align: center; }
+.owner { color: var(--dark); margin: 5px 0; }
+.tech-stack { font-size: 0.75rem; opacity: 0.5; }
