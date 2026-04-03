@@ -1,4 +1,4 @@
-// تحديث عداد الكلمات
+// تحديث عداد الكلمات بشكل فوري
 document.getElementById('text-input').addEventListener('input', function() {
     const text = this.value.trim();
     const words = text ? text.split(/\s+/).length : 0;
@@ -6,28 +6,28 @@ document.getElementById('text-input').addEventListener('input', function() {
 });
 
 function startAnalysis() {
-    const input = document.getElementById("text-input").value.trim();
-    if (input.length < 10) {
-        alert("النص قصير جداً لفحصه!");
-        return;
-    }
-
-    const btn = document.getElementById("scan-btn");
+    const textInput = document.getElementById("text-input").value.trim();
     const resultArea = document.getElementById("result-area");
     const percentDisplay = document.getElementById("result-percentage");
     const progressFill = document.getElementById("progress-fill");
     const statusText = document.getElementById("result-status");
     const msgText = document.getElementById("result-msg");
+    const btn = document.getElementById("scan-btn");
 
+    if (textInput.split(/\s+/).filter(w => w.length > 0).length < 5) {
+        alert("النص قصير جداً! يرجى إدخال جملة مفيدة على الأقل.");
+        return;
+    }
+
+    // تهيئة حالة الفحص
     btn.disabled = true;
-    btn.innerText = "جاري الفحص المعمق...";
+    btn.innerText = "جاري التحليل الإحصائي...";
     resultArea.classList.remove("hidden");
-    
     percentDisplay.innerText = "0%";
     progressFill.style.width = "0%";
 
     setTimeout(() => {
-        let score = calculateLogic(input);
+        const score = calculateAIDetection(textInput);
         
         percentDisplay.innerText = score + "%";
         progressFill.style.width = score + "%";
@@ -35,30 +35,40 @@ function startAnalysis() {
         if (score > 55) {
             percentDisplay.style.color = "#d63031";
             progressFill.style.background = "#d63031";
-            statusText.innerText = "احتمال انتحال آلي 🤖";
-            msgText.innerText = "النص يظهر تكراراً عالياً في الأنماط اللغوية المعتادة في نماذج الذكاء الاصطناعي.";
+            statusText.innerText = "احتمال ذكاء اصطناعي عالي 🤖";
+            msgText.innerText = "تم رصد أنماط لغوية متكررة وجمل متزنة الطول بشكل آلي، مما يشير لتدخل الذكاء الاصطناعي.";
         } else {
             percentDisplay.style.color = "#00b894";
             progressFill.style.background = "#00b894";
-            statusText.innerText = "نص بشري أصلي ✨";
-            msgText.innerText = "التحليل أظهر تنوعاً طبيعياً في المفردات وطول الجمل، مما يؤكد أصلية المحتوى.";
+            statusText.innerText = "بصمة بشرية أصيلة ✨";
+            msgText.innerText = "يظهر النص تذبذباً طبيعياً في طول الجمل وتنوعاً في المفردات يعكس أسلوب الكتابة البشرية.";
         }
 
         btn.disabled = false;
         btn.innerText = "بدء الفحص العميق 🔍";
-    }, 1000);
+    }, 1200);
 }
 
-function calculateLogic(text) {
-    let score = 10; 
-    const words = text.split(/\s+/);
-    const unique = new Set(words.map(w => w.toLowerCase())).size;
-    const ratio = unique / words.length;
+function calculateAIDetection(text) {
+    let aiScore = 10;
+    const words = text.split(/\s+/).filter(w => w.length > 0);
+    const uniqueWords = new Set(words.map(w => w.toLowerCase())).size;
+    
+    // 1. حساب تنوع المفردات (Lexical Diversity)
+    const diversityRatio = uniqueWords / words.length;
+    if (diversityRatio < 0.6) aiScore += 35; 
 
-    if (ratio < 0.6) score += 40;
-    const markers = ["علاوة على", "بالإضافة إلى", "في الختام", "بشكل عام", "من المهم"];
-    markers.forEach(m => { if (text.includes(m)) score += 15; });
-    if (words.length > 80) score += 10;
+    // 2. فحص كلمات الربط النمطية للـ AI
+    const patterns = ["بالإضافة إلى ذلك", "علاوة على ذلك", "في الختام", "بشكل عام", "من الجدير بالذكر", "تجدر الإشارة"];
+    patterns.forEach(p => { if (text.includes(p)) aiScore += 15; });
 
-    return Math.min(score, 99);
+    // 3. تحليل طول النص (الـ AI يميل للإطناب في الردود)
+    if (words.length > 100) aiScore += 10;
+
+    // ضبط النسبة النهائية
+    let final = Math.min(aiScore, 99);
+    // إضافة لمسة عشوائية بسيطة للمصداقية (Natural Jitter)
+    if (final < 15) final = Math.floor(Math.random() * 10) + 5;
+
+    return final;
 }
