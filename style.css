@@ -1,62 +1,47 @@
 :root {
-    --accent: #10b981; /* أخضر للنجاح */
-    --danger: #ef4444; /* أحمر للخطر */
-    --dark: #1e293b;
-    --paper: #ffffff;
-    --bg: #f1f5f9;
+    --primary: #2d3436;
+    --accent: #0984e3;
+    --success: #00b894;
+    --danger: #d63031;
+    --bg: #f5f6fa;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Changa', sans-serif; }
 
-body { background: var(--bg); color: var(--dark); display: flex; justify-content: center; min-height: 100vh; padding: 20px; }
+body { background: var(--bg); display: flex; justify-content: center; padding: 20px; color: var(--primary); }
 
 .app-container {
-    width: 100%; max-width: 650px; background: var(--paper);
-    border-radius: 24px; padding: 40px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-    border: 1px solid #e2e8f0;
+    width: 100%; max-width: 600px; background: white; padding: 30px;
+    border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    border: 1px solid #ddd;
 }
 
-/* الهيدر والشعار */
-header { text-align: center; margin-bottom: 30px; }
-.brand { display: flex; align-items: center; justify-content: center; gap: 12px; }
-.logo-icon { background: var(--dark); color: white; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-weight: bold; font-size: 1.5rem; }
-h1 { font-size: 2.2rem; color: var(--dark); }
-.tagline { opacity: 0.6; font-size: 0.9rem; margin-top: 5px; }
+header { text-align: center; margin-bottom: 25px; }
+.logo-box { width: 50px; height: 50px; background: var(--primary); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-weight: bold; font-size: 1.5rem; }
 
-/* منطقة الإدخال */
-.input-wrapper { position: relative; margin-bottom: 20px; }
 textarea {
-    width: 100%; height: 220px; padding: 20px; border-radius: 16px;
-    border: 2px solid #e2e8f0; background: #f8fafc; font-size: 1.1rem;
-    resize: none; outline: none; transition: 0.3s;
+    width: 100%; height: 220px; padding: 15px; border: 2px solid #eee;
+    border-radius: 12px; font-size: 1rem; resize: none; outline: none;
+    transition: 0.3s; background: #fafafa;
 }
-textarea:focus { border-color: var(--dark); background: white; }
-.word-count { position: absolute; bottom: 15px; left: 15px; font-size: 0.8rem; opacity: 0.5; }
+textarea:focus { border-color: var(--accent); background: white; }
 
-/* الأزرار */
-.control-panel { display: flex; gap: 10px; }
-#scan-btn { flex: 1; padding: 15px; border-radius: 12px; border: none; background: var(--dark); color: white; font-weight: bold; cursor: pointer; font-size: 1.1rem; transition: 0.3s; }
-#scan-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
-.btn-secondary { width: 60px; border-radius: 12px; border: 1px solid #e2e8f0; background: white; cursor: pointer; transition: 0.2s; }
+.info-bar { margin: 10px 0; font-size: 0.9rem; opacity: 0.7; text-align: left; }
 
-/* كرت النتائج */
-.result-card { 
-    margin-top: 30px; padding: 25px; border-radius: 16px; 
-    background: #f8fafc; border: 1px solid #e2e8f0; animation: fadeIn 0.5s ease;
+#scan-btn {
+    width: 100%; padding: 15px; border: none; background: var(--primary);
+    color: white; border-radius: 10px; font-weight: bold; cursor: pointer;
+    font-size: 1.1rem; transition: 0.3s;
 }
-.result-header { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 0.9rem; font-weight: bold; }
-.badge { background: #e2e8f0; padding: 4px 12px; border-radius: 20px; }
+#scan-btn:hover { background: var(--accent); }
 
-.score-section { display: flex; align-items: center; gap: 25px; margin-bottom: 20px; }
-.score-circle { text-align: center; border-right: 2px solid #e2e8f0; padding-right: 25px; }
-#percentage-text { font-size: 3rem; font-weight: 800; line-height: 1; }
-
-.progress-container { width: 100%; height: 8px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
-.progress-fill { height: 100%; width: 0%; transition: width 1s ease; }
-
+.result-card { margin-top: 25px; padding: 20px; border: 1px solid #eee; border-radius: 15px; text-align: center; background: #fff; }
 .hidden { display: none; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-footer { margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; text-align: center; }
-.owner { color: var(--dark); margin: 5px 0; }
-.tech-stack { font-size: 0.75rem; opacity: 0.5; }
+#result-percentage { font-size: 3.5rem; font-weight: 800; color: var(--accent); line-height: 1; }
+.status-box { margin: 15px 0; }
+#result-status { font-size: 1.3rem; margin-bottom: 5px; }
+#result-msg { font-size: 0.9rem; color: #636e72; }
+
+.progress-bar { width: 100%; height: 10px; background: #eee; border-radius: 5px; overflow: hidden; margin-top: 15px; }
+#progress-fill { height: 100%; width: 0%; transition: 1s ease; background: var(--accent); }
