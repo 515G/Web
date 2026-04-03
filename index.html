@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صِدق Pro | كاشف الانتحال الآلي</title>
+    <title>صِـدق Pro | كاشف الانتحال</title>
     <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -12,40 +12,30 @@
 <div class="app-container">
     <header>
         <div class="logo-box">J</div>
-        <h1>منصة صِـدق <small></small></h1>
-        <p>التحليل اللغوي المتقدم لكشف النصوص المولدة آلياً</p>
+        <h1>منصة صِـدق <small>v2.1</small></h1>
+    
     </header>
 
     <main>
-        <div class="input-section">
-            <textarea id="text-input" placeholder="أدخل النص هنا (يفضل +30 كلمة لنتائج دقيقة)..."></textarea>
-            <div class="info-bar">
-                <span>عدد الكلمات: <b id="word-count">0</b></span>
-            </div>
-        </div>
+        <textarea id="text-input" placeholder="أدخل النص هنا للفحص (يفضل +20 كلمة)..."></textarea>
+        
+        <div class="stats-bar">عدد الكلمات: <span id="word-count">0</span></div>
 
         <button type="button" id="scan-btn" onclick="startAnalysis()">بدء الفحص العميق 🔍</button>
 
         <div id="result-area" class="result-card hidden">
-            <div class="gauge-wrapper">
-                <div id="result-percentage">0%</div>
-                <div class="label">احتمالية التدخل الآلي</div>
-            </div>
-            
-            <div class="status-box">
-                <h3 id="result-status">جاري التحليل...</h3>
-                <p id="result-msg"></p>
-            </div>
-
-            <div class="progress-bar">
+            <h2 id="result-percentage">0%</h2>
+            <p id="result-label">احتمال الذكاء الاصطناعي</p>
+            <div class="progress-container">
                 <div id="progress-fill"></div>
             </div>
+            <h3 id="result-status">جاري التحليل...</h3>
+            <p id="result-msg"></p>
         </div>
     </main>
 
     <footer>
-        <p> <b>  </b>v 2.01</p>
-        <small>© 2026 جميع الحقوق محفوظة - نظام SPA</small>
+        <p>© 2026 جميع الحقوق محفوظة | <b>v2.01</b></p>
     </footer>
 </div>
 
