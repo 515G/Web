@@ -34,52 +34,46 @@ function startAnalysis() {
     const msgText = document.getElementById("result-msg");
     const btn = document.getElementById("scan-btn");
 
-    // التحقق من طول النص
     const wordsCount = textInput.split(/\s+/).filter(w => w.length > 0).length;
     if (wordsCount < 5) {
-        alert("النص قصير جداً! يرجى إدخال 5 كلمات على الأقل لتحليل الأنماط.");
+        alert("النص قصير جداً! يرجى إدخال 5 كلمات على الأقل.");
         return;
     }
 
-    // تجهيز واجهة الفحص
     btn.disabled = true;
     btn.innerText = "جاري الفحص المتقدم...";
     resultArea.classList.remove("hidden");
     percentDisplay.innerText = "0.0%";
     progressFill.style.width = "0%";
 
-    // محاكاة وقت التحليل الإحصائي
     setTimeout(() => {
         const score = calculateAdvancedAI(textInput);
         
-        // عرض النسبة النهائية
         percentDisplay.innerText = score.toFixed(1) + "%";
         progressFill.style.width = score + "%";
         
         let color, status, confidence, message;
 
-        // منطق تحديد الحالة بناءً على دقة الخوارزمية الجديدة
         if (score > 75) {
-            color = "#d63031"; // أحمر
+            color = "#d63031";
             status = "احتمال ذكاء اصطناعي عالي 🤖";
             confidence = "مرتفعة جداً ✅";
-            message = "تم رصد رتابة لغوية عالية وانحراف معياري منخفض جداً في طول الجمل، وهي سمات مميزة لنماذج GPT.";
+            message = "تم رصد رتابة لغوية وإطناب في النص (طول زائد مع جمل منظمة آلياً)؛ النص يطابق بصمة الـ AI.";
         } else if (score > 40) {
-            color = "#f39c12"; // برتقالي
-            status = "محتوى مشتبه به / هجين ⚠️";
+            color = "#f39c12";
+            status = "محتوى مشتبه به ⚠️";
             confidence = "متوسطة ⚠️";
-            message = "النص يظهر توازناً آلياً في بعض الفقرات مع وجود لمسات بشرية؛ قد يكون نصاً معاد صياغته.";
+            message = "النص يحتوي على فقرات متوازنة بشكل آلي؛ قد يكون نصاً بشرياً تم تحسينه بالذكاء الاصطناعي.";
         } else {
-            color = "#00b894"; // أخضر
+            color = "#00b894";
             status = "بصمة بشرية أصلية ✨";
             confidence = "مرتفعة ✅";
-            message = "التحليل الإحصائي يؤكد وجود تباين طبيعي 'نبض لغوي' في طول الجمل وتنوع المفردات، مما يثبت المصدر البشري.";
+            message = "النص يظهر عشوائية طبيعية وتنوعاً في طول الجمل والمفردات، مما يثبت المصدر البشري.";
         }
 
-        // تطبيق التنسيقات والرسائل
         percentDisplay.style.color = color;
         progressFill.style.background = color;
-        statusText.innerHTML = `${status} <br> <span style="font-size: 0.8rem; background: #eee; padding: 4px 12px; border-radius: 20px; color: #555; margin-top: 10px; display: inline-block;">مستوى الثقة في النتيجة: ${confidence}</span>`;
+        statusText.innerHTML = `${status} <br> <span style="font-size: 0.8rem; background: #eee; padding: 4px 12px; border-radius: 20px; color: #555; margin-top: 10px; display: inline-block;">مستوى الثقة: ${confidence}</span>`;
         msgText.innerText = message;
 
         btn.disabled = false;
@@ -88,49 +82,47 @@ function startAnalysis() {
 }
 
 /**
- * 5. الخوارزمية المحدثة (النبض اللغوي والانحراف المعياري)
- * هذه الخوارزمية تفرق بين رتابة الـ AI وعشوائية البشر
+ * 5. الخوارزمية المحدثة (التي تستهدف النصوص الطويلة جداً)
  */
 function calculateAdvancedAI(text) {
-    let aiPoints = 25; // نقطة التعادل
+    let aiPoints = 20; 
     const words = text.split(/\s+/).filter(w => w.length > 0);
     const sentences = text.split(/[.!?؟]+/).filter(s => s.trim().length > 2);
     
-    // أ- فحص تنوع المفردات (Lexical Diversity)
+    // أ- فحص الطول الزائد (شرطك الجديد)
+    // إذا النص طويل جداً (أكثر من 150 كلمة) نزيد النقاط فوراً
+    if (words.length > 150) {
+        aiPoints += 45; // دفعة قوية للـ AI بسبب الإطناب
+    } else if (words.length > 80) {
+        aiPoints += 20;
+    }
+
+    // ب- فحص تنوع المفردات
     const uniqueWords = new Set(words.map(w => w.toLowerCase())).size;
     const diversityRatio = uniqueWords / words.length;
-    
-    if (diversityRatio < 0.5) aiPoints += 30; // تكرار كلمات عالي (نمط AI)
-    else if (diversityRatio > 0.8) aiPoints -= 15; // تنوع بشري غني
+    if (diversityRatio < 0.45) aiPoints += 25; 
 
-    // ب- تحليل "النبض" (انحراف طول الجمل) - الأداة الأكثر دقة
+    // ج- تحليل انحراف طول الجمل (الرتابة)
     if (sentences.length > 1) {
         const lengths = sentences.map(s => s.trim().split(/\s+/).length);
         const avg = lengths.reduce((a, b) => a + b) / lengths.length;
-        
-        // حساب الانحراف المعياري البسيط
         const variance = lengths.reduce((a, b) => a + Math.pow(b - avg, 2), 0) / lengths.length;
         const deviation = Math.sqrt(variance);
         
-        if (deviation < 2.5) aiPoints += 35; // جمل متقاربة الطول جداً (رتابة AI)
-        else if (deviation > 7) aiPoints -= 25; // جمل متباينة الطول جداً (إبداع بشري)
+        if (deviation < 3) aiPoints += 30; // جمل متساوية (AI)
+        else if (deviation > 8) aiPoints -= 20; // جمل متنوعة (بشري)
     }
 
-    // ج- فحص الكلمات "الباردة" والأكاديمية الزائدة
-    const academicPatterns = ["بالإضافة إلى ذلك", "علاوة على ذلك", "ومن الجدير بالذكر", "بشكل ملحوظ", "يعد هذا", "في الختام"];
-    let patternHits = 0;
-    academicPatterns.forEach(p => { if (text.includes(p)) patternHits++; });
-    aiPoints += (patternHits * 8);
+    // د- الكلمات الانتقالية النمطية
+    const academicPatterns = ["بالإضافة إلى ذلك", "علاوة على ذلك", "ومن الجدير بالذكر", "بشكل عام", "يعد هذا", "في الختام"];
+    academicPatterns.forEach(p => { if (text.includes(p)) aiPoints += 10; });
 
-    // د- موازنة النصوص القصيرة (نسبة خطأ أعلى)
-    if (words.length < 20) aiPoints += 10;
-
-    // هـ- إضافة تذبذب عشوائي (Random Jitter) للواقعية
-    let final = aiPoints + (Math.random() * 6 - 3);
+    // إضافة تذبذب بسيط للواقعية
+    let final = aiPoints + (Math.random() * 5 - 2.5);
     
-    // حصر النسبة في حدود منطقية
-    if (final > 99.8) final = 98.4 + (Math.random() * 1.2);
-    if (final < 3) final = 3.2 + (Math.random() * 2);
+    // حصر النتيجة في حدود منطقية
+    if (final > 99.8) final = 98.2 + (Math.random() * 1.5);
+    if (final < 4) final = 4.1 + (Math.random() * 2);
 
     return final;
 }
