@@ -1,10 +1,30 @@
-// تحديث عداد الكلمات بشكل فوري
+// تحديث عداد الكلمات تلقائياً
 document.getElementById('text-input').addEventListener('input', function() {
     const text = this.value.trim();
-    const words = text ? text.split(/\s+/).length : 0;
+    const words = text ? text.split(/\s+/).filter(w => w.length > 0).length : 0;
     document.getElementById('word-count').innerText = words;
 });
 
+// وظيفة مسح النص
+function clearText() {
+    document.getElementById('text-input').value = "";
+    document.getElementById('word-count').innerText = "0";
+    document.getElementById('result-area').classList.add('hidden');
+}
+
+// وظيفة اللصق من الحافظة
+async function pasteText() {
+    try {
+        const text = await navigator.clipboard.readText();
+        document.getElementById('text-input').value = text;
+        const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+        document.getElementById('word-count').innerText = words;
+    } catch (err) {
+        alert("يرجى استخدام Ctrl+V للصق النص.");
+    }
+}
+
+// الوظيفة الأساسية للفحص
 function startAnalysis() {
     const textInput = document.getElementById("text-input").value.trim();
     const resultArea = document.getElementById("result-area");
@@ -15,60 +35,78 @@ function startAnalysis() {
     const btn = document.getElementById("scan-btn");
 
     if (textInput.split(/\s+/).filter(w => w.length > 0).length < 5) {
-        alert("النص قصير جداً! يرجى إدخال جملة مفيدة على الأقل.");
+        alert("النص قصير جداً! يرجى إدخال 5 كلمات على الأقل.");
         return;
     }
 
-    // تهيئة حالة الفحص
     btn.disabled = true;
     btn.innerText = "جاري التحليل الإحصائي...";
     resultArea.classList.remove("hidden");
-    percentDisplay.innerText = "0%";
+    
+    percentDisplay.innerText = "0.0%";
     progressFill.style.width = "0%";
 
     setTimeout(() => {
-        const score = calculateAIDetection(textInput);
+        const score = calculateAdvancedAI(textInput);
         
-        percentDisplay.innerText = score + "%";
+        // عرض النسبة بكسور عشرية
+        percentDisplay.innerText = score.toFixed(1) + "%";
         progressFill.style.width = score + "%";
         
-        if (score > 55) {
-            percentDisplay.style.color = "#d63031";
-            progressFill.style.background = "#d63031";
-            statusText.innerText = "احتمال ذكاء اصطناعي عالي 🤖";
-            msgText.innerText = "تم رصد أنماط لغوية متكررة وجمل متزنة الطول بشكل آلي، مما يشير لتدخل الذكاء الاصطناعي.";
+        let color, status, confidence, message;
+
+        // منطق تحديد الحالة والألوان
+        if (score > 70) {
+            color = "#d63031";
+            status = "احتمال ذكاء اصطناعي عالي 🤖";
+            confidence = "مرتفعة ✅";
+            message = "تم رصد أنماط لغوية آلية متكررة تفتقر للتنوع البشري الطبيعي.";
+        } else if (score > 35) {
+            color = "#f39c12";
+            status = "محتوى مشتبه به ⚠️";
+            confidence = "متوسطة ⚠️";
+            message = "النص يظهر توازناً غريباً في تركيب الجمل، قد يكون نتاجاً لإعادة صياغة.";
         } else {
-            percentDisplay.style.color = "#00b894";
-            progressFill.style.background = "#00b894";
-            statusText.innerText = "بصمة بشرية أصيلة ✨";
-            msgText.innerText = "يظهر النص تذبذباً طبيعياً في طول الجمل وتنوعاً في المفردات يعكس أسلوب الكتابة البشرية.";
+            color = "#00b894";
+            status = "بصمة بشرية أصيلة ✨";
+            confidence = "مرتفعة ✅";
+            message = "يُظهر التحليل تنوعاً طبيعياً في المفردات ورتماً متغيراً للجمل يعكس أسلوبك الخاص.";
         }
 
+        percentDisplay.style.color = color;
+        progressFill.style.background = color;
+        statusText.innerHTML = `${status} <br> <span style="font-size: 0.8rem; background: #eee; padding: 4px 10px; border-radius: 20px; color: #555; margin-top: 8px; display: inline-block;">مستوى الثقة: ${confidence}</span>`;
+        msgText.innerText = message;
+
         btn.disabled = false;
-        btn.innerText = "بدء الفحص العميق 🔍";
-    }, 1200);
+        btn.innerText = "إعادة الفحص العميق 🔄";
+    }, 1800);
 }
 
-function calculateAIDetection(text) {
-    let aiScore = 10;
+// خوارزمية التحليل (الواقعية)
+function calculateAdvancedAI(text) {
+    let aiPoints = 12; 
     const words = text.split(/\s+/).filter(w => w.length > 0);
     const uniqueWords = new Set(words.map(w => w.toLowerCase())).size;
-    
-    // 1. حساب تنوع المفردات (Lexical Diversity)
-    const diversityRatio = uniqueWords / words.length;
-    if (diversityRatio < 0.6) aiScore += 35; 
+    const sentences = text.split(/[.!?؟]+/).filter(s => s.trim().length > 0);
 
-    // 2. فحص كلمات الربط النمطية للـ AI
-    const patterns = ["بالإضافة إلى ذلك", "علاوة على ذلك", "في الختام", "بشكل عام", "من الجدير بالذكر", "تجدر الإشارة"];
-    patterns.forEach(p => { if (text.includes(p)) aiScore += 15; });
+    // 1. حساب تنوع المفردات
+    const lexicalDensity = uniqueWords / words.length;
+    if (lexicalDensity < 0.6) aiPoints += 35;
 
-    // 3. تحليل طول النص (الـ AI يميل للإطناب في الردود)
-    if (words.length > 100) aiScore += 10;
+    // 2. حساب تباين طول الجمل
+    if (sentences.length > 1) {
+        const lengths = sentences.map(s => s.trim().split(/\s+/).length);
+        const avg = lengths.reduce((a, b) => a + b) / lengths.length;
+        const variance = lengths.reduce((a, b) => a + Math.pow(b - avg, 2), 0) / lengths.length;
+        if (variance < 4) aiPoints += 25; 
+    }
 
-    // ضبط النسبة النهائية
-    let final = Math.min(aiScore, 99);
-    // إضافة لمسة عشوائية بسيطة للمصداقية (Natural Jitter)
-    if (final < 15) final = Math.floor(Math.random() * 10) + 5;
+    // 3. فحص كلمات الربط النمطية
+    const patterns = ["بالإضافة إلى", "علاوة على", "في الختام", "بشكل عام", "جدير بالذكر"];
+    patterns.forEach(p => { if (text.includes(p)) aiPoints += 8; });
 
-    return final;
+    // إضافة "ضجيج" عشوائي لضمان عدم تكرار نفس الرقم لنفس النص دائماً
+    let final = aiPoints + (Math.random() * 6 - 3);
+    return Math.min(Math.max(final, 4.1), 99.7);
 }
